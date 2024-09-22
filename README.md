@@ -47,7 +47,7 @@ return [
     'client_id' => env('CMI_CLIENT_ID', 'your-client-id'),
     'client_secret' => env('CMI_CLIENT_SECRET', 'your-client-secret'),
     'store_key' => env('CMI_STORE_KEY', 'your-store-key'),
-    'currency' => env('CMI_CURRENCY', 'MAD'), // Default is MAD
+    'currency' => env('CMI_CURRENCY', 'MAD'), 
     'callback_url' => env('CMI_CALLBACK_URL', 'your-callback-url'),
 ];
 ```
@@ -81,8 +81,8 @@ class PaymentController extends Controller
         $response = $payment->process([
             'amount' => 100.00,  // The amount to charge
             'order_id' => 'ORDER12345',  // Your unique order ID
-            'customer_name' => 'John Doe', // Customer details
-            'customer_email' => 'john@example.com',
+            'customer_name' => 'Abdellah baidou', // Customer details
+            'customer_email' => 'baidou.abd@gmail.com', // Customer Email
         ]);
 
         return redirect($response->getPaymentUrl()); // Redirect user to CMI payment page
