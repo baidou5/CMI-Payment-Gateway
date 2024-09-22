@@ -71,7 +71,7 @@ To process a payment, you can use the provided `CMIPayment` facade:
 2. Example usage in a controller:
 
 ```php
-use YourNamespace\CMIPaymentGateway\CMIPayment;
+use BaidouAbdellah\CMIPaymentGateway\CMIPayment;
 
 class PaymentController extends Controller
 {
