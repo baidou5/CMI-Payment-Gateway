@@ -11,7 +11,7 @@
 - Seamless integration with Laravel
 - Easy to configure and use
 - Secure payment processing via CMI
-- Supports multiple currency transactions
+- Supports multiple SHOPs (SAAS) transactions
 - Customizable payment callback URL
 
 ## Requirements
