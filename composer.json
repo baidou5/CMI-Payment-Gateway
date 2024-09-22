@@ -2,6 +2,7 @@
     "name": "baidouabdellah/cmi-payment-gateway",
     "description": "Laravel package for integrating CMI payment gateway",
     "type": "library",
+    "license": "MIT"
     "autoload": {
         "psr-4": {
             "baidouabdellah\\CMIPaymentGateway\\": "src/"
