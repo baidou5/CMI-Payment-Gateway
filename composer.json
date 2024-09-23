@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "YourNamespace\\CMIPaymentGateway\\": "src/"
+            "Baidouabdellah\\CMIPaymentGateway\\": "src/"
         }
     },
     "license": "MIT"
