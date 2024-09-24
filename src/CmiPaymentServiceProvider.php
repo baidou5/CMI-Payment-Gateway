@@ -43,7 +43,7 @@ class CmiPaymentServiceProvider extends ServiceProvider
           // Publish configuration file when installing package
             $this->publishes([
                 __DIR__.'/../config/cmi.php' => config_path('cmi.php'),
-            ], 'config');
+            ], 'cmi-config');
         }
 
       // Record tracks
