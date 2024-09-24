@@ -1,6 +1,6 @@
  ![CMI-Payment-Gateway](https://raw.githubusercontent.com/baidou5/CMI-Payment-Gateway/main/cmi.jpg)
 # CMI Payment Gateway for Laravel
-  
+
 [![Latest Version](https://img.shields.io/github/v/release/baidou5/CMI-Payment-Gateway)](https://github.com/baidou5/CMI-Payment-Gateway/releases)
 [![License](https://img.shields.io/github/license/baidou5/CMI-Payment-Gateway)](https://github.com/baidou5/CMI-Payment-Gateway/blob/main/LICENSE)
 
@@ -47,7 +47,7 @@ return [
     'client_id' => env('CMI_CLIENT_ID', 'your-client-id'),
     'client_secret' => env('CMI_CLIENT_SECRET', 'your-client-secret'),
     'store_key' => env('CMI_STORE_KEY', 'your-store-key'),
-    'currency' => env('CMI_CURRENCY', 'MAD'), 
+    'currency' => env('CMI_CURRENCY', 'MAD'),
     'callback_url' => env('CMI_CALLBACK_URL', 'your-callback-url'),
 ];
 ```
@@ -109,7 +109,7 @@ class PaymentController extends Controller
     {
         // Handle the response from CMI here
         $paymentStatus = $request->input('STATUS');
-        
+
         if ($paymentStatus === 'APPROVED') {
             // Payment was successful
             return view('payment.success');
@@ -125,6 +125,27 @@ class PaymentController extends Controller
 
 You can test the integration using CMI's sandbox credentials. Ensure you configure the sandbox environment in the `cmi.php` configuration file or use different `.env` variables for testing.
 
+### Basic Test Card Numbers
+
+Credit card information cannot be used in test mode. Instead, use any of the following test card numbers, along with a valid future expiration date and any random CVC number, to simulate a successful payment transaction.
+
+| Card Type            | Card Number         | CVC (Random) | Expiration Date (Future)          |
+|----------------------|---------------------|--------------|-----------------------------------|
+| Visa                 | 4242 4242 4242 4242 | 3 digits     | Any future date                  |
+| Visa (Debit)         | 4000 0566 5566 5556 | 3 digits     | Any future date                  |
+| Mastercard           | 5555 5555 5555 4444 | 3 digits     | Any future date                  |
+| Mastercard (Series 2)| 2223 0031 2200 3222 | 3 digits     | Any future date                  |
+| Mastercard (Debit)   | 5200 8282 8282 8210 | 3 digits     | Any future date                  |
+| Mastercard (Prepaid) | 5105 1051 0510 5100 | 3 digits     | Any future date                  |
+| American Express     | 3782 822463 10005   | 4 digits     | Any future date                  |
+| American Express     | 3714 4963 5398 431  | 4 digits     | Any future date                  |
+| Discover             | 6011 1111 1111 1117 | 3 digits     | Any future date                  |
+| Discover             | 6011 0009 9013 9424 | 3 digits     | Any future date                  |
+| Diners Club          | 3056 9300 0902 0004 | 3 digits     | Any future date                  |
+| JCB                  | 3566 0020 2036 0505 | 3 digits     | Any future date                  |
+
+Use these details in your testing environment to verify the successful integration of the CMI payment gateway.
+
 ## Security
 
 If you discover any security issues, please send an email to `baidou.abd@gmail.com` instead of using the issue tracker.
@@ -137,4 +158,3 @@ If you discover any security issues, please send an email to `baidou.abd@gmail.c
 ## License
 
 This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-

@@ -1,7 +1,8 @@
 {
     "name": "baidouabdellah/cmi-payment-gateway",
     "description": "CMI Payment Gateway for Laravel",
-    "version": "1.0.1",
+    "keywords": ["laravel", "payment", "gateway", "CMI", "integration"],
+    "version": "1.0.2",
     "type": "library",
     "require": {
         "php": "^7.4|^8.0",
