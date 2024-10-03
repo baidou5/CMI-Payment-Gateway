@@ -3,7 +3,8 @@
 ![CMI-Payment-Gateway](https://raw.githubusercontent.com/baidou5/CMI-Payment-Gateway/main/cmi.jpg)
 
 # CMI Payment Gateway for Laravel
-
+[![Latest Version](https://img.shields.io/github/v/release/baidou5/CMI-Payment-Gateway)](https://github.com/baidou5/CMI-Payment-Gateway/releases)
+[![License](https://img.shields.io/github/license/baidou5/CMI-Payment-Gateway)](https://github.com/baidou5/CMI-Payment-Gateway/blob/main/LICENSE)
 [![PHP Version](https://img.shields.io/badge/PHP-%3E%3D7.4-blue.svg)](https://www.php.net/)
 [![Laravel Version](https://img.shields.io/badge/Laravel-%3E%3D7.0-orange.svg)](https://laravel.com/)
 [![Total Downloads](https://img.shields.io/packagist/dt/baidouabdellah/cmi-payment-gateway)](https://packagist.org/packages/baidouabdellah/cmi-payment-gateway)
