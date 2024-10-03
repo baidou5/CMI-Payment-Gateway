@@ -1,8 +1,17 @@
- ![CMI-Payment-Gateway](https://raw.githubusercontent.com/baidou5/CMI-Payment-Gateway/main/cmi.jpg)
+
+
+![CMI-Payment-Gateway](https://raw.githubusercontent.com/baidou5/CMI-Payment-Gateway/main/cmi.jpg)
+
 # CMI Payment Gateway for Laravel
 
-[![Latest Version](https://img.shields.io/github/v/release/baidou5/CMI-Payment-Gateway)](https://github.com/baidou5/CMI-Payment-Gateway/releases)
-[![License](https://img.shields.io/github/license/baidou5/CMI-Payment-Gateway)](https://github.com/baidou5/CMI-Payment-Gateway/blob/main/LICENSE)
+[![PHP Version](https://img.shields.io/badge/PHP-%3E%3D7.4-blue.svg)](https://www.php.net/)
+[![Laravel Version](https://img.shields.io/badge/Laravel-%3E%3D7.0-orange.svg)](https://laravel.com/)
+[![Total Downloads](https://img.shields.io/packagist/dt/baidouabdellah/cmi-payment-gateway)](https://packagist.org/packages/baidouabdellah/cmi-payment-gateway)
+[![Contributors](https://img.shields.io/github/contributors/baidou5/CMI-Payment-Gateway.svg)](https://github.com/baidou5/CMI-Payment-Gateway/graphs/contributors)
+[![Issues](https://img.shields.io/github/issues/baidou5/CMI-Payment-Gateway.svg)](https://github.com/baidou5/CMI-Payment-Gateway/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/baidou5/CMI-Payment-Gateway.svg)](https://github.com/baidou5/CMI-Payment-Gateway/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/baidou5/CMI-Payment-Gateway.svg?style=social)](https://github.com/baidou5/CMI-Payment-Gateway/stargazers)
+
 
 **CMI-Payment-Gateway** is a simple and secure package for integrating CMI (Centre Monétique Interbancaire) Payment Gateway with Laravel applications. It allows you to process payments in a seamless way by interacting with the CMI API.
 
@@ -44,22 +53,34 @@ In the `config/cmi.php` file, add your CMI Merchant credentials:
 
 ```php
 return [
-    'client_id' => env('CMI_CLIENT_ID', 'your-client-id'),
-    'client_secret' => env('CMI_CLIENT_SECRET', 'your-client-secret'),
-    'store_key' => env('CMI_STORE_KEY', 'your-store-key'),
-    'currency' => env('CMI_CURRENCY', 'MAD'),
-    'callback_url' => env('CMI_CALLBACK_URL', 'your-callback-url'),
+    'merchant_id' => env('CMI_MERCHANT_ID'),
+    'client_id' => env('CMI_CLIENT_ID'),
+    'store_key' => env('CMI_STORE_KEY'),
+    'api_key' => env('CMI_API_KEY'),
+    'secret_key' => env('CMI_SECRET_KEY'),
+    'sandbox' => env('CMI_SANDBOX', true),
+    'base_uri' => env('CMI_BASE_URI', 'https://testpayment.cmi.co.ma/fim/est3Dgate'),
+    'ok_url' => env('CMI_OK_URL', 'your_ok_url'),
+    'fail_url' => env('CMI_FAIL_URL', 'your_fail_url'),
+    'shop_url' => env('CMI_SHOP_URL', 'your_shop_url'),
+    'callback_url' => env('CMI_CALLBACK_URL', 'your_callback_url'),
 ];
 ```
 
 You can also add these environment variables to your `.env` file:
 
 ```env
-CMI_CLIENT_ID=your-client-id
-CMI_CLIENT_SECRET=your-client-secret
-CMI_STORE_KEY=your-store-key
-CMI_CURRENCY=MAD
-CMI_CALLBACK_URL=https://your-domain.com/callback
+CMI_MERCHANT_ID=your_merchant_id
+CMI_CLIENT_ID=your_client_id
+CMI_STORE_KEY=your_store_key
+CMI_API_KEY=your_api_key
+CMI_SECRET_KEY=your_secret_key
+CMI_SANDBOX=true
+CMI_BASE_URI=https://testpayment.cmi.co.ma/fim/est3Dgate
+CMI_OK_URL=https://yourwebsite.com/payment/success
+CMI_FAIL_URL=https://yourwebsite.com/payment/fail
+CMI_SHOP_URL=https://yourwebsite.com/payment/cancel
+CMI_CALLBACK_URL=https://yourwebsite.com/payment/callback
 ```
 
 ## Usage
