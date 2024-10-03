@@ -20,54 +20,71 @@
  *
  * This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
  */
-namespace baidouabdellah\CMIPaymentGateway;
+ namespace baidouabdellah\CMIPaymentGateway;
 
-use GuzzleHttp\Client;
+ use GuzzleHttp\Client;
 
-class CmiPaymentService
-{
-    protected $merchantId;
-    protected $apiKey;
-    protected $secretKey;
-    protected $sandbox;
-    protected $callbackUrl;
+ class CmiPaymentService
+ {
+     protected $merchantId;
+     protected $clientId;
+     protected $storeKey;
+     protected $apiKey;
+     protected $secretKey;
+     protected $sandbox;
+     protected $baseUri;
+     protected $okUrl;
+     protected $failUrl;
+     protected $shopUrl;
+     protected $callbackUrl;
 
-    public function __construct()
-    {
-        $this->merchantId = config('cmi.merchant_id');
-        $this->apiKey = config('cmi.api_key');
-        $this->secretKey = config('cmi.secret_key');
-        $this->sandbox = config('cmi.sandbox');
-        $this->callbackUrl = config('cmi.callback_url');
-    }
+     public function __construct()
+     {
+         $this->merchantId = config('cmi.merchant_id');
+         $this->clientId = config('cmi.client_id');
+         $this->storeKey = config('cmi.store_key');
+         $this->apiKey = config('cmi.api_key');
+         $this->secretKey = config('cmi.secret_key');
+         $this->sandbox = config('cmi.sandbox');
+         $this->baseUri = config('cmi.base_uri');
+         $this->okUrl = config('cmi.ok_url');
+         $this->failUrl = config('cmi.fail_url');
+         $this->shopUrl = config('cmi.shop_url');
+         $this->callbackUrl = config('cmi.callback_url');
+     }
 
-    public function createPayment($amount, $orderId, $description)
-    {
-        $endpoint = $this->sandbox ? "https://sandbox.cmi.co.ma/api" : "https://cmi.co.ma/api";
+     public function createPayment($amount, $orderId, $description)
+     {
+         $endpoint = $this->sandbox ? "https://sandbox.cmi.co.ma/api" : $this->baseUri;
 
-        // Build the order for payment
-        $data = [
-            'merchant_id' => $this->merchantId,
-            'amount' => $amount,
-            'order_id' => $orderId,
-            'description' => $description,
-            'callback_url' => $this->callbackUrl,
-        ];
+         // Build the order for payment
+         $data = [
+             'merchant_id' => $this->merchantId,
+             'client_id' => $this->clientId,
+             'store_key' => $this->storeKey,
+             'amount' => $amount,
+             'order_id' => $orderId,
+             'description' => $description,
+             'callback_url' => $this->callbackUrl,
+             'ok_url' => $this->okUrl,
+             'fail_url' => $this->failUrl,
+             'shop_url' => $this->shopUrl,
+         ];
 
-      // Send the request using Guzzle
-        return $this->sendRequest($endpoint, $data);
-    }
+         // Send the request using Guzzle
+         return $this->sendRequest($endpoint, $data);
+     }
 
-    protected function sendRequest($url, $data)
-    {
-        $client = new Client();
-        $response = $client->post($url, [
-            'form_params' => $data,
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->apiKey,
-            ],
-        ]);
+     protected function sendRequest($url, $data)
+     {
+         $client = new Client();
+         $response = $client->post($url, [
+             'form_params' => $data,
+             'headers' => [
+                 'Authorization' => 'Bearer ' . $this->apiKey,
+             ],
+         ]);
 
-        return json_decode($response->getBody(), true);
-    }
-}
+         return json_decode($response->getBody(), true);
+     }
+ }

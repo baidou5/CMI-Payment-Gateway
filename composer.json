@@ -1,17 +1,70 @@
-{
+ {
     "name": "baidouabdellah/cmi-payment-gateway",
-    "description": "CMI Payment Gateway for Laravel",
+    "description": "Laravel package to integrate with the CMI payment gateway",
+    "version": "1.0.3",
     "keywords": ["laravel", "payment", "gateway", "CMI", "integration"],
-    "version": "1.0.2",
-    "type": "library",
+    "homepage": "https://github.com/baidouabdellah/cmi-payment-gateway",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Abdellah Baidou",
+            "email": "baidou.abd@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/support": "^8.0|^9.0|^10.0"
+        "php": "^8.1",
+        "php": "^7.4|^8.0|^8.1|^8.2",
+        "spatie/laravel-package-tools": "^1.9.2",
+        "illuminate/support": "^7.4|^7.5|^8.0|^9.0|^10.0|^11.0",
+        "illuminate/contracts": "^7.4|^7.5|^8.0|^9.0|^10.0|^11.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.0|^8.0",
+        "nunomaduro/larastan": "^2.0",
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "Baidouabdellah\\CMIPaymentGateway\\": "src/"
+            "Baidouabdellah\\CmiPaymentGateway\\": "src"
         }
     },
-    "license": "MIT"
+    "autoload-dev": {
+        "psr-4": {
+            "Baidouabdellah\\CmiPaymentGateway\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "format-v": "vendor/bin/pint -v"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Baidouabdellah\\CmiPaymentGateway\\CmiServiceProvider"
+            ],
+            "aliases": {
+                "Cmi": "Baidouabdellah\\CmiPaymentGateway\\Facades\\Cmi"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
