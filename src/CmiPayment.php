@@ -20,19 +20,24 @@
  *
  * This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
  */
-namespace baidouabdellah\CMIPaymentGateway;
+namespace Baidouabdellah\CmiPaymentGateway;
 
 class CmiPayment
 {
-    protected $service;
+    protected CmiPaymentService $service;
 
     public function __construct(CmiPaymentService $service)
     {
         $this->service = $service;
     }
 
-    public function pay($amount, $orderId, $description)
+    /**
+     * @param int|float|string $amount
+     * @param array<string, int|float|string|bool|null> $params
+     * @return array<string, mixed>
+     */
+    public function pay($amount, string $orderId, string $description, array $params = []): array
     {
-        return $this->service->createPayment($amount, $orderId, $description);
+        return $this->service->createPayment($amount, $orderId, $description, $params);
     }
 }

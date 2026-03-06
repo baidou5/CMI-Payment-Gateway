@@ -20,7 +20,7 @@
  *
  * This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
  */
-namespace baidouabdellah\CMIPaymentGateway;
+namespace Baidouabdellah\CmiPaymentGateway;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -28,25 +28,27 @@ class CmiPaymentServiceProvider extends ServiceProvider
 {
     public function register()
     {
-      // Register CmiPayment as Singleton within the app
-        $this->app->singleton(CmiPayment::class, function ($app) {
-            return new CmiPayment(new CmiPaymentService());
+        $this->mergeConfigFrom(__DIR__.'/../config/cmi.php', 'cmi');
+
+        // Register low-level service first, then the higher-level gateway class.
+        $this->app->singleton(CmiPaymentService::class, function ($app) {
+            return new CmiPaymentService();
         });
 
-      // Merge configuration file
-        $this->mergeConfigFrom(__DIR__.'/../config/cmi.php', 'cmi');
+        $this->app->singleton(CmiPayment::class, function ($app) {
+            return new CmiPayment($app->make(CmiPaymentService::class));
+        });
     }
 
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
-          // Publish configuration file when installing package
+            // Publish configuration file when installing package
             $this->publishes([
                 __DIR__.'/../config/cmi.php' => config_path('cmi.php'),
             ], 'cmi-config');
         }
 
-      // Record tracks
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
     }
 }

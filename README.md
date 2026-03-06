@@ -14,7 +14,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/baidou5/CMI-Payment-Gateway.svg?style=social)](https://github.com/baidou5/CMI-Payment-Gateway/stargazers)
 
 
-**CMI-Payment-Gateway** is a simple and secure package for integrating CMI (Centre Monétique Interbancaire) Payment Gateway with Laravel applications. It allows you to process payments in a seamless way by interacting with the CMI API.
+**CMI-Payment-Gateway** is a Laravel package for integrating CMI (Centre Monétique Interbancaire) hosted payments with hash generation and callback validation.
 
 ## Features
 
@@ -61,10 +61,21 @@ return [
     'secret_key' => env('CMI_SECRET_KEY'),
     'sandbox' => env('CMI_SANDBOX', true),
     'base_uri' => env('CMI_BASE_URI', 'https://testpayment.cmi.co.ma/fim/est3Dgate'),
-    'ok_url' => env('CMI_OK_URL', 'your_ok_url'),
-    'fail_url' => env('CMI_FAIL_URL', 'your_fail_url'),
-    'shop_url' => env('CMI_SHOP_URL', 'your_shop_url'),
-    'callback_url' => env('CMI_CALLBACK_URL', 'your_callback_url'),
+    'ok_url' => env('CMI_OK_URL', 'http://localhost/cmi/ok'),
+    'fail_url' => env('CMI_FAIL_URL', 'http://localhost/cmi/fail'),
+    'shop_url' => env('CMI_SHOP_URL', 'http://localhost/checkout'),
+    'callback_url' => env('CMI_CALLBACK_URL', 'http://localhost/cmi/callback'),
+    'store_type' => env('CMI_STORE_TYPE', '3D_PAY_HOSTING'),
+    'tran_type' => env('CMI_TRAN_TYPE', 'PreAuth'),
+    'lang' => env('CMI_DEFAULT_LANG', 'fr'),
+    'currency' => env('CMI_DEFAULT_CURRENCY', '504'),
+    'hash_algorithm' => env('CMI_HASH_ALGORITHM', 'ver3'),
+    'encoding' => env('CMI_ENCODING', 'UTF-8'),
+    'auto_redirect' => env('CMI_AUTO_REDIRECT', true),
+    'callback_response' => env('CMI_CALLBACK_RESPONSE', true),
+    'session_timeout' => env('CMI_SESSION_TIMEOUT', 1800),
+    'transport' => env('CMI_TRANSPORT', 'hosted_form'), // hosted_form | server_api
+    'http_timeout' => env('CMI_HTTP_TIMEOUT', 15),
 ];
 ```
 
@@ -82,32 +93,44 @@ CMI_OK_URL=https://yourwebsite.com/payment/success
 CMI_FAIL_URL=https://yourwebsite.com/payment/fail
 CMI_SHOP_URL=https://yourwebsite.com/payment/cancel
 CMI_CALLBACK_URL=https://yourwebsite.com/payment/callback
+CMI_STORE_TYPE=3D_PAY_HOSTING
+CMI_TRAN_TYPE=PreAuth
+CMI_DEFAULT_LANG=fr
+CMI_DEFAULT_CURRENCY=504
+CMI_HASH_ALGORITHM=ver3
+CMI_ENCODING=UTF-8
+CMI_AUTO_REDIRECT=true
+CMI_CALLBACK_RESPONSE=true
+CMI_SESSION_TIMEOUT=1800
+CMI_TRANSPORT=hosted_form
+CMI_HTTP_TIMEOUT=15
 ```
 
 ## Usage
 
-To process a payment, you can use the provided `CMIPayment` facade:
+To process a payment, use the provided `CmiPayment` service/facade:
 
-1. First, inject the `CMIPayment` service into your controller or use the facade.
+1. First, inject the `CmiPayment` service into your controller or use the facade.
 
 2. Example usage in a controller:
 
 ```php
-use BaidouAbdellah\CMIPaymentGateway\CMIPayment;
+use Baidouabdellah\CmiPaymentGateway\CmiPayment;
 
 class PaymentController extends Controller
 {
     public function makePayment(Request $request)
     {
-        $payment = new CMIPayment();
-        $response = $payment->process([
-            'amount' => 100.00,  // The amount to charge
-            'order_id' => 'ORDER12345',  // Your unique order ID
-            'customer_name' => 'Abdellah baidou', // Customer details
-            'customer_email' => 'baidou.abd@gmail.com', // Customer Email
+        $payment = app(CmiPayment::class);
+        $response = $payment->pay(100.00, 'ORDER12345', 'Order payment', [
+            'email' => 'customer@example.com',
+            'BillToName' => 'Customer Name',
         ]);
 
-        return redirect($response->getPaymentUrl()); // Redirect user to CMI payment page
+        // $response['gateway_url'] => CMI endpoint
+        // $response['payload'] => fields to submit as POST form
+        // $response['hash'] => generated hash
+        return response()->json($response);
     }
 }
 ```
@@ -129,16 +152,14 @@ class PaymentController extends Controller
 {
     public function handleCallback(Request $request)
     {
-        // Handle the response from CMI here
-        $paymentStatus = $request->input('STATUS');
+        $service = app(\Baidouabdellah\CmiPaymentGateway\CmiPaymentService::class);
+        $isValid = $service->validateHash($request->all());
 
-        if ($paymentStatus === 'APPROVED') {
-            // Payment was successful
+        if ($isValid && $request->input('ProcReturnCode') === '00') {
             return view('payment.success');
-        } else {
-            // Payment failed
-            return view('payment.failed');
         }
+
+        return view('payment.failed');
     }
 }
 ```

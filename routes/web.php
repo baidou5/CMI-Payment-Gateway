@@ -21,8 +21,10 @@
  * This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
  */
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Baidouabdellah\CmiPaymentGateway\CmiPaymentService;
 
-Route::post('/cmi/callback', function () {
-  // Processing payment responses from CMI
-    return response('Payment Callback Handled', 200);
-});
+Route::post('/cmi/callback', function (Request $request, CmiPaymentService $service) {
+    return response($service->resolveCallbackResponse($request->all()), 200)
+        ->header('Content-Type', 'text/plain');
+})->name('cmi.callback');

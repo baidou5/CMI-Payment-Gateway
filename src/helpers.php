@@ -21,15 +21,22 @@
  * This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
  */
  if (!function_exists('cmi_generate_order_id')) {
-     function cmi_generate_order_id()
+     function cmi_generate_order_id(): string
      {
-         return 'ORD-' . strtoupper(uniqid());
+         return 'ORD-'.strtoupper(bin2hex(random_bytes(8)));
      }
  }
 
  if (!function_exists('cmi_format_amount')) {
-     function cmi_format_amount($amount)
+     /**
+      * @param int|float|string $amount
+      */
+     function cmi_format_amount($amount): string
      {
-         return number_format($amount, 2, '.', '');
+         if (! is_numeric($amount)) {
+             throw new InvalidArgumentException('Amount must be numeric.');
+         }
+
+         return number_format((float) $amount, 2, '.', '');
      }
  }
