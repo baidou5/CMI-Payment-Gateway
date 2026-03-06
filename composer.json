@@ -1,7 +1,7 @@
 {
     "name": "baidouabdellah/cmi-payment-gateway",
     "description": "Laravel package to integrate with the CMI payment gateway",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "keywords": ["laravel", "payment", "gateway", "CMI", "integration"],
     "homepage": "https://github.com/baidouabdellah/cmi-payment-gateway",
     "license": "MIT",
